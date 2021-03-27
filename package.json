@@ -1,0 +1,25 @@
+{
+  "name": "edit-roblox-place",
+  "version": "1.0.0",
+  "main": "bin/index.js",
+  "bin": {
+    "edit-roblox-place": "./bin/index.js"
+  },
+  "repository": "https://github.com/Lundstrong/Edit-Roblox-Place.git",
+  "author": "sasial-dev",
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "yarn standard",
+    "standard": "standard | snazzy",
+    "standard:fix": "standard --fix | snazzy"
+  },
+  "dependencies": {
+    "boxen": "^5.0.0",
+    "commander": "^7.2.0",
+    "opener": "^1.5.2"
+  },
+  "devDependencies": {
+    "snazzy": "^9.0.0",
+    "standard": "^16.0.3"
+  }
+}
