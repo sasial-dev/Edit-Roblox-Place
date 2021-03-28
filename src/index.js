@@ -48,10 +48,6 @@ const questions = [{
 
 program.parse()
 
-if (!process.argv.slice(2)[0]) {
-  program.help()
-}
-
 const options = program.opts()
 if (options.config) {
   if (fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
