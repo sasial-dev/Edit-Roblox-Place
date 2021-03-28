@@ -14,12 +14,16 @@ if (!fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
   inquirer.prompt(questions).then((answers) => {
     if (answers.configFile === true) {
       console.log(chalk.bold('Creating the config file.'))
-      fs.mkdirSync((resolve('~/.edit-roblox-place')), {
-        recursive: true
-      })
-      fs.writeFileSync((resolve('~/.edit-roblox-place/config.json')), JSON.stringify({
-        favourites: {}
-      }))
+      try {
+        fs.mkdirSync((resolve('~/.edit-roblox-place')), {
+          recursive: true
+        })
+        fs.writeFileSync((resolve('~/.edit-roblox-place/config.json')), JSON.stringify({
+          favourites: {}
+        }))
+      } catch(err) {
+        console.log(chalk.redBright(`edit-roblox-place failed to create a config file! Use ${chalk.white(chalk.italic('edit-roblox-place -c create'))} to create one. Please note that sudo may be required.`))
+      }
     }
   })
 }

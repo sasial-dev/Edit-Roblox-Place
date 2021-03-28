@@ -14,8 +14,12 @@ if (fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
   inquirer.prompt(questions).then((answers) => {
     if (answers.configFile === true) {
       console.log(chalk.bold('Removing the config file.'))
-      fs.rmSync((resolve('~/.edit-roblox-place/config.json')))
-      fs.rmdirSync((resolve('~/.edit-roblox-place')))
+      try {
+        fs.rmSync((resolve('~/.edit-roblox-place/config.json')))
+        fs.rmdirSync((resolve('~/.edit-roblox-place')))
+      } catch(err) {
+        console.log(chalk.redBright(`edit-roblox-place failed to remove the config file! You can remove the folder and its contents yourself at: ${chalk.white(chalk.italic(resolve('~/.edit-roblox-place')))}`))
+      }
     }
   })
 }
