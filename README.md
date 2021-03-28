@@ -8,7 +8,7 @@ A powerful, interactive CLI (Command Line Interface) to help you open Roblox Stu
 <img alt="npm" src="https://img.shields.io/npm/v/edit-roblox-place">
 <a href="https://npmjs.com/package/edit-roblox-place"><img alt="NPM Downloads" src="https://img.shields.io/npm/dw/edit-roblox-place)"></a>
 <img alt="David" src="https://img.shields.io/david/Lundstrong/Edit-Roblox-Place">
-<a href="https://app.fossa.com/projects/git%2Bgithub.com%2FLundstrong%2FEdit-Roblox-Place?ref=badge_shield"><img alt="FOSSA Status" src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FLundstrong%2FEdit-Roblox-Place.svg?type=shield)"></a>
+<a href="https://app.fossa.com/projects/git%2Bgithub.com%2FLundstrong%2FEdit-Roblox-Place?ref=badge_shield"><img alt="FOSSA Status" src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FLundstrong%2FEdit-Roblox-Place.svg?type=shield"></a>
 </div>
 
 ## Getting Started
