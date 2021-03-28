@@ -11,7 +11,7 @@ const chalk = require('chalk')
 const path = require('path')
 const fs = require('fs')
 const resolve = require('resolve-dir')
-var Table = require('cli-table');
+const Table = require('cli-table')
 
 const program = new Command()
 
@@ -27,15 +27,25 @@ const questions = [{
   message: 'Type in the name you would like to put this favourite as.'
 },
 {
-  type: 'number',
+  type: 'input',
   name: 'configPlace',
-  message: 'Type in the placeid for this favourite.'
+  message: 'Type in the placeid for this favourite.',
+  validate: function (value) {
+    const pass = value.match(
+      /^\d+$/
+    )
+    if (pass) {
+      return true
+    }
+
+    return 'Please enter a valid place id!'
+  }
 },
 {
-  type: 'input',
+  type: 'checkbox',
   name: 'configName',
   message: 'Type in the name of the favourite you would like to remove.'
-},
+}
 ]
 
 program.parse()
@@ -48,28 +58,40 @@ const options = program.opts()
 if (options.config) {
   if (fs.existsSync(path.normalize(resolve('~/.edit-roblox-place/config.json')))) {
     if (options.config === 'list') {
-      var tableClass = new Table({
-        head: [chalk.blueBright.bold('Favourite'), chalk.blueBright.bold('Place ID')]
-      });
-      var tableJSON = JSON.parse(fs.readFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json'))))
-      var keys = Object.keys(tableJSON.favourites)
+      const tableClass = new Table({
+        head: [chalk.blueBright.bold('Favourite'), chalk.blueBright.bold('Place ID')],
+        chars: {
+          'top-left': '╭',
+          'top-right': '╮',
+          'bottom-right': '╯',
+          'bottom-left': '╰'
+        }
+      })
+      const tableJSON = JSON.parse(fs.readFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json'))))
+      const keys = Object.keys(tableJSON.favourites)
+      let i
       for (i = 0; i < keys.length; i++) {
-        let object = {}
+        const object = {}
         object[keys[i]] = tableJSON.favourites[keys[i]]
         tableClass.push(object)
       }
       console.log(tableClass.toString())
-    } else if (options.config == 'remove') {
-      inquirer.prompt([questions[2]]).then((answers) => {
-          const file = JSON.parse(fs.readFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json'))))
-          delete file.favourites[answers.configName] // Is there any better way to do this? This feels wrong!
-          fs.writeFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json')), JSON.stringify(file))
-          console.log('Edited the config file.')
-      });
+    } else if (options.config === 'remove') {
+      const file = JSON.parse(fs.readFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json'))))
+      const question = questions[2]
+      question.choices = Object.keys(file.favourites)
+      inquirer.prompt([question]).then((answers) => {
+        let i
+        for (i = 0; i < answers.configName.length; i++) {
+          delete file.favourites[answers.configName[i]] // Is there any better way to do this? This feels wrong!
+        }
+        fs.writeFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json')), JSON.stringify(file))
+        console.log('Edited the config file.')
+      })
     } else {
       if (options.place && options.favourite) {
         const answers = {
-          configName: options.favourite,
+          configName: options.favourite.toLowerCase(),
           configPlace: options.place
         }
         const file = JSON.parse(fs.readFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json'))))
@@ -79,6 +101,7 @@ if (options.config) {
       } else if (options.place) {
         inquirer.prompt([questions[0]]).then((answers) => {
           answers.configPlace = options.place
+          answers.configName = answers.configName.toLowerCase()
           const file = JSON.parse(fs.readFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json'))))
           file.favourites[answers.configName] = answers.configPlace
           fs.writeFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json')), JSON.stringify(file))
@@ -86,7 +109,7 @@ if (options.config) {
         })
       } else if (options.favourite) {
         inquirer.prompt([questions[1]]).then((answers) => {
-          answers.configName = options.favourite
+          answers.configName = options.favourite.toLowerCase()
           const file = JSON.parse(fs.readFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json'))))
           file.favourites[answers.configName] = answers.configPlace
           fs.writeFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json')), JSON.stringify(file))
@@ -94,6 +117,7 @@ if (options.config) {
         })
       } else {
         inquirer.prompt([questions[0], questions[1]]).then((answers) => {
+          answers.configName = answers.configName.toLowerCase()
           const file = JSON.parse(fs.readFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json'))))
           file.favourites[answers.configName] = answers.configPlace
           fs.writeFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json')), JSON.stringify(file))
@@ -114,15 +138,17 @@ if (options.config) {
 } else if (options.favourite) {
   if (fs.existsSync(path.normalize(resolve('~/.edit-roblox-place/config.json')))) {
     const configFile = JSON.parse(fs.readFileSync(path.normalize(resolve('~/.edit-roblox-place/config.json'))))
-    console.log(boxen(`Opening place (${configFile.favourites[options.favourite]}) in Roblox Studio`, {
+    console.log(boxen(`Opening place (${configFile.favourites[options.favourite.toLowerCase()]}) in Roblox Studio`, {
       padding: 1,
       borderColor: 'blue',
       borderStyle: 'round'
     }))
-    opener(`roblox-studio:1+task:EditPlace+placeId:${configFile.favourites[options.favourite]}`)
+    opener(`roblox-studio:1+task:EditPlace+placeId:${configFile.favourites[options.favourite.toLowerCase()]}`)
   } else {
     console.log(chalk.redBright(`You need to have a config file created! Use ${chalk.white(chalk.italic('node node_modules/edit-roblox-place/src/install.js'))} to create one.`))
   }
 } else {
-  console.log(chalk.redBright('You need to use an option! See '))
+  program
+    .addHelpText('beforeAll', chalk.redBright('You need to use an option!'))
+    .help()
 }
