@@ -53,7 +53,7 @@ if (options.config) {
   if (fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
     if (options.config === 'list') {
       const tableClass = new Table({
-        head: [chalk.blueBright.bold('Favourite'), chalk.blueBright.bold('Place ID')],
+        head: [chalk.cyan.bold('Favourite'), chalk.cyan.bold('Place ID')],
         chars: {
           'top-left': '╭',
           'top-right': '╮',
@@ -135,7 +135,7 @@ if (options.config) {
       'bottom-left': '╰'
     }
   })
-  tableClass.push([chalk.blueBright.bold(`Opening place (${options.place}) in Roblox Studio`)])
+  tableClass.push([chalk.cyan.bold(`Opening place (${options.place}) in Roblox Studio`)])
   console.log(tableClass.toString())
   opener(`roblox-studio:1+task:EditPlace+placeId:${options.place}`)
 } else if (options.favourite) {
@@ -154,7 +154,7 @@ if (options.config) {
           'bottom-left': '╰'
         }
       })
-      tableClass.push([chalk.blueBright.bold(`Opening place (${configFile.favourites[options.favourite.toLowerCase()]}) in Roblox Studio`)])
+      tableClass.push([chalk.cyan.bold(`Opening place (${configFile.favourites[options.favourite.toLowerCase()]}) in Roblox Studio`)])
       console.log(tableClass.toString())
       opener(`roblox-studio:1+task:EditPlace+placeId:${configFile.favourites[options.favourite.toLowerCase()]}`)
     } else {
