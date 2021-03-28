@@ -142,11 +142,20 @@ if (options.config) {
   if (fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
     const configFile = JSON.parse(fs.readFileSync((resolve('~/.edit-roblox-place/config.json'))))
     if (configFile.favourites[options.favourite.toLowerCase()]) {
-      console.log(boxen(`Opening place (${configFile.favourites[options.favourite.toLowerCase()]}) in Roblox Studio`, {
-        padding: 1,
-        borderColor: 'blue',
-        borderStyle: 'round'
-      }))
+      const tableClass = new Table({
+        style: {
+          'padding-left': 5,
+          'padding-right': 5
+        },
+        chars: {
+          'top-left': '╭',
+          'top-right': '╮',
+          'bottom-right': '╯',
+          'bottom-left': '╰'
+        }
+      })
+      tableClass.push([chalk.blueBright.bold(`Opening place (${configFile.favourites[options.favourite.toLowerCase()]}) in Roblox Studio`)])
+      console.log(tableClass.toString())
       opener(`roblox-studio:1+task:EditPlace+placeId:${configFile.favourites[options.favourite.toLowerCase()]}`)
     } else {
       console.log(chalk.redBright(`${options.favourite.toLowerCase()} is not a valid favourite.`))
