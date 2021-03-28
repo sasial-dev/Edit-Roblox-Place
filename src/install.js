@@ -21,7 +21,7 @@ if (!fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
         fs.writeFileSync((resolve('~/.edit-roblox-place/config.json')), JSON.stringify({
           favourites: {}
         }))
-      } catch(err) {
+      } catch (err) {
         console.log(chalk.redBright(`edit-roblox-place failed to create a config file! Use ${chalk.white(chalk.italic('edit-roblox-place -c create'))} to create one. Please note that sudo may be required.`))
       }
     }
