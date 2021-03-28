@@ -17,7 +17,7 @@ program
   .version(packageInfo.version, '-v, --version')
   .option('-p, --place <id>', 'place id to open')
   .option('-f, --favourite <name>', 'favourite to use')
-  .option('-c, --config [list | add | remove]', 'open the interactive config wizard. You can skip this by appending -p & -f options if you wish. Append list to list the current config.')
+  .option('-c, --config [create | list | add | remove]', 'open the interactive config wizard. You can skip this by appending -p & -f options if you wish. Append list to list the current config. Append create to create the config file, if you did not create it at install.')
 
 const questions = [{
   type: 'input',
@@ -70,6 +70,16 @@ if (options.config) {
         tableClass.push(object)
       }
       console.log(tableClass.toString())
+    } else if (options.config === 'create') {
+      if (!fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
+        console.log(chalk.bold('Creating the config file.'))
+        fs.mkdirSync((resolve('~/.edit-roblox-place')), {
+          recursive: true
+        })
+        fs.writeFileSync((resolve('~/.edit-roblox-place/config.json')), JSON.stringify({
+          favourites: {}
+        }))
+      }
     } else if (options.config === 'remove') {
       const file = JSON.parse(fs.readFileSync((resolve('~/.edit-roblox-place/config.json'))))
       const question = questions[2]
@@ -161,7 +171,7 @@ if (options.config) {
       console.log(chalk.redBright(`${options.favourite.toLowerCase()} is not a valid favourite.`))
     }
   } else {
-    console.log(chalk.redBright(`You need to have a config file created! Use ${chalk.white(chalk.italic('node node_modules/edit-roblox-place/src/install.js'))} to create one.`))
+    console.log(chalk.redBright(`You need to have a config file created! Use ${chalk.white(chalk.italic('edit-roblox-place -c create'))} to create one.`))
   }
 } else {
   program
