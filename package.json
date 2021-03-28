@@ -10,10 +10,10 @@
   "license": "Apache-2.0",
   "scripts": {
     "test": "yarn standard",
-    "postinstall": "src/install.js",
+    "postinstall": "node src/install.js",
     "standard": "standard | snazzy",
     "standard:fix": "standard --fix | snazzy",
-    "uninstall": "src/uninstall.js"
+    "uninstall": "node src/uninstall.js"
   },
   "dependencies": {
     "boxen": "^5.0.0",
