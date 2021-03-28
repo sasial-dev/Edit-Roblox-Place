@@ -16,7 +16,6 @@
     "uninstall": "node src/uninstall.js"
   },
   "dependencies": {
-    "boxen": "^5.0.0",
     "cli-table": "^0.3.6",
     "commander": "^7.2.0",
     "inquirer": "^8.0.0",
