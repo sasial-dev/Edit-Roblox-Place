@@ -16,7 +16,7 @@ const program = new Command()
 program
   .version(packageInfo.version, '-v, --version')
   .option('-p, --place <id>', 'place id to open')
-  .option('-f, --favourite <name>', 'favourite to use')
+  .option('-f, --favourite <name...>', 'favourite to use')
   .option('-c, --config [create | list | add | remove]', 'open the interactive config wizard. You can skip this by appending -p & -f options if you wish. Append list to list the current config. Append create to create the config file, if you did not create it at install.')
 
 const questions = [{
@@ -150,6 +150,7 @@ if (options.config) {
   opener(`roblox-studio:1+task:EditPlace+placeId:${options.place}`)
 } else if (options.favourite) {
   if (fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
+    options.favourite = options.favourite[0] ? options.favourite.join(" ") : options.favourite
     const configFile = JSON.parse(fs.readFileSync((resolve('~/.edit-roblox-place/config.json'))))
     if (configFile.favourites[options.favourite.toLowerCase()]) {
       const tableClass = new Table({
@@ -168,7 +169,7 @@ if (options.config) {
       console.log(tableClass.toString())
       opener(`roblox-studio:1+task:EditPlace+placeId:${configFile.favourites[options.favourite.toLowerCase()]}`)
     } else {
-      console.log(chalk.redBright(`${options.favourite.toLowerCase()} is not a valid favourite.`))
+      console.log(chalk.redBright(`${options.favourite.toLowerCase()} is not a valid favourite. Use ${chalk.white(chalk.italic('edit-roblox-place -c list'))} to get a list of your favourites.`))
     }
   } else {
     console.log(chalk.redBright(`You need to have a config file created! Use ${chalk.white(chalk.italic('edit-roblox-place -c create'))} to create one.`))
