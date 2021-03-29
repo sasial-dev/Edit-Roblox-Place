@@ -150,7 +150,7 @@ if (options.config) {
   opener(`roblox-studio:1+task:EditPlace+placeId:${options.place}`)
 } else if (options.favourite) {
   if (fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
-    options.favourite = options.favourite[0] ? options.favourite.join(" ") : options.favourite
+    options.favourite = options.favourite[0] ? options.favourite.join(' ') : options.favourite
     const configFile = JSON.parse(fs.readFileSync((resolve('~/.edit-roblox-place/config.json'))))
     if (configFile.favourites[options.favourite.toLowerCase()]) {
       const tableClass = new Table({
