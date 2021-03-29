@@ -8,6 +8,7 @@ A powerful, interactive CLI (Command Line Interface) to help you open Roblox Stu
 <img alt="npm" src="https://img.shields.io/npm/v/edit-roblox-place">
 <a href="https://npmjs.com/package/edit-roblox-place"><img alt="NPM Downloads" src="https://img.shields.io/npm/dw/edit-roblox-place)"></a>
 <img alt="David" src="https://img.shields.io/david/Lundstrong/Edit-Roblox-Place">
+<a href="https://app.fossa.com/projects/git%2Bgithub.com%2FLundstrong%2FEdit-Roblox-Place?ref=badge_shield"><img alt="FOSSA Status" src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FLundstrong%2FEdit-Roblox-Place.svg?type=shield"></a>
 </div>
 
 ## Getting Started
@@ -48,7 +49,7 @@ We love contributions! Pull requests are warmly welcomed and highly appriciated.
 Join the [Lundstrong Discord](https://discord.gg/2w9PmHZPwX). A channel will be opened up in the near-future for support.
 
 ## License
-[Apache 2.0](https://choosealicense.com/licenses/apache-2.0/)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FLundstrong%2FEdit-Roblox-Place.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FLundstrong%2FEdit-Roblox-Place?ref=badge_large)
 
 ## Acknowledgements
 edit-roblox-place has been inspired by a version written in Rust. (https://github.com/rojo-rbx/edit-roblox-place) We've built on that to provide more features including interactivity and favourites. If it wasn't for that library, this wouldn't exist.
@@ -64,4 +65,3 @@ And the libraries for the developing:
 
 * [standard](https://npmjs.com/package/standard)
 * [snazzy](https://npmjs.com/package/snazzy)
-
