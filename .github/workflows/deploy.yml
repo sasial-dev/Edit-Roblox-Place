@@ -26,6 +26,6 @@ jobs:
       run: npm run package
     - name: Publish Binaries
       uses: AButler/upload-release-assets@v2.0
-        with:
-          files: 'edit-roblox-place-*'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        files: 'edit-roblox-place-*'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
