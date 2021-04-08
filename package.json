@@ -10,6 +10,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "test": "yarn standard",
+    "prepackage": "yarn test",
+    "package": "pkg -o edit-roblox-place -t node14-win-x64,node14-win-x86,node14-macos-x64,node14-linux-x64 src/index.js",
     "postinstall": "node src/install.js",
     "standard": "standard | snazzy",
     "standard:fix": "standard --fix | snazzy",
@@ -23,6 +25,7 @@
     "resolve-dir": "^1.0.1"
   },
   "devDependencies": {
+    "pkg": "^4.5.1",
     "snazzy": "^9.0.0",
     "standard": "^16.0.3"
   }
