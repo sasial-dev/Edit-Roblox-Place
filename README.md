@@ -6,8 +6,8 @@ A powerful, interactive CLI (Command Line Interface) to help you open Roblox Stu
 <a href="https://github.com/Lundstrong/Edit-Roblox-Place/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/Lundstrong/Edit-Roblox-Place"></a>
 <a href="https://standardjs.com"><img alt="JavaScript Style Guide" src="https://img.shields.io/badge/code_style-standard-brightgreen.svg"></a>
 <img alt="npm" src="https://img.shields.io/npm/v/edit-roblox-place">
-<a href="https://npmjs.com/package/edit-roblox-place"><img alt="NPM Downloads" src="https://img.shields.io/npm/dw/edit-roblox-place)"></a>
 <img alt="David" src="https://img.shields.io/david/Lundstrong/Edit-Roblox-Place">
+<img alt="David" src="https://img.shields.io/david/dev/Lundstrong/edit-roblox-place">
 <a href="https://app.fossa.com/projects/git%2Bgithub.com%2FLundstrong%2FEdit-Roblox-Place?ref=badge_shield"><img alt="FOSSA Status" src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FLundstrong%2FEdit-Roblox-Place.svg?type=shield"></a>
 </div>
 
@@ -15,15 +15,21 @@ A powerful, interactive CLI (Command Line Interface) to help you open Roblox Stu
 
 ### Prerequisites
 
-You must have [node](https://nodejs.org/) installed. It must be **at least** version 10.
+You must have [node](https://nodejs.org/) installed if you are installing through npm. It must be **at least** version 10.
 
-### Installation
+### Reccomended Installation
 
 Use the package manager [npm](https://npmjs.com/) to install edit-roblox-place.
 
 ```bash
 npm install edit-roblox-place --global
 ```
+
+### Other Installation
+Binaries are avaliable for versions 1.1.2 and above. To download them, go to the release page, and download the version for your operating system. You can then use it as a command line argument (Example: `./edit-roblox-place --help`)
+
+Or add it to your path in [windows](https://www.howtogeek.com/118594/how-to-edit-your-system-path-for-easy-command-line-access/), [mac and linux](https://opensource.com/article/17/6/set-path-linux). With more information provided [here](https://wpbeaches.com/how-to-add-to-the-shell-path-in-macos-using-terminal/) for mac users.
+It is suggested to use node, but if you have added edit-roblox-place to your path, it will work like the node version.
 
 ## Usage
 
@@ -46,7 +52,7 @@ None at the moment. If you have any ideas please let us know on the discord or o
 We love contributions! Pull requests are warmly welcomed and highly appriciated. For major changes, please open an issue first or discuss on the discord to let us know what you would like to change.
 
 ## Support
-Join the [Lundstrong Discord](https://discord.gg/2w9PmHZPwX). A channel will be opened up in the near-future for support.
+Join the [Lundstrong Discord](https://discord.gg/2w9PmHZPwX). A channel is there for support.
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FLundstrong%2FEdit-Roblox-Place.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FLundstrong%2FEdit-Roblox-Place?ref=badge_large)
