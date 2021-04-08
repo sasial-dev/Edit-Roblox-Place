@@ -11,7 +11,7 @@ const questions = [{
 
 if (fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
   console.log(chalk.bold("Thank you for installing edit-roblox-place. We're sorry to see you go."))
-  console.log(`Due to node limitations, the uninstall script is ${chalk.underline("ran during an update")}. If you are updating and not uninstalling, please opt to ${chalk.redBright("keep")} your config file.`)
+  console.log(`Due to node limitations, the uninstall script is ${chalk.underline('ran during an update')}. If you are updating and not uninstalling, please opt to ${chalk.redBright('keep')} your config file.`)
   inquirer.prompt(questions).then((answers) => {
     if (answers.configFile === true) {
       console.log(chalk.bold('Removing the config file.'))

@@ -1,6 +1,6 @@
 {
   "name": "edit-roblox-place",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "main": "src/index.js",
   "bin": {
     "edit-roblox-place": "src/index.js"
@@ -10,7 +10,6 @@
   "license": "Apache-2.0",
   "scripts": {
     "test": "yarn standard",
-    "prepackage": "yarn test",
     "package": "pkg -o edit-roblox-place -t node14-win-x64,node14-win-x86,node14-macos-x64,node14-linux-x64 src/index.js",
     "postinstall": "node src/install.js",
     "standard": "standard | snazzy",
