@@ -10,6 +10,40 @@ const chalk = require('chalk')
 const fs = require('fs')
 const resolve = require('resolve-dir')
 const Table = require('cli-table')
+const semver = require('semver')
+const semverDiff = require('semver-diff')
+const latestVersion = require('latest-version');
+
+function checkVersion() {
+  return new Promise((resolve, reject) => {
+    latestVersion(packageInfo.name).then(moduleVersion => {
+      if (semver.lt(packageInfo.version, moduleVersion)) {
+        const tableClass = new Table({
+          style: {
+            'padding-left': 5,
+            'padding-right': 5
+          },
+          chars: {
+            'top-left': '╭',
+            'top-right': '╮',
+            'bottom-right': '╯',
+            'bottom-left': '╰'
+          }
+        })
+        let updateType = semverDiff(packageInfo.version, moduleVersion)
+        updateType = updateType.charAt(0).toUpperCase() + updateType.slice(1)
+        const msg = {
+          updateAvailable: `${updateType} update available ${chalk.dim(packageInfo.version)} → ${chalk.green(moduleVersion)}`,
+          runUpdate: `Run ${chalk.cyan(`npm i ${packageInfo.name} -g`)} to update`,
+        };
+        tableClass.push([`${msg.updateAvailable}\n${msg.runUpdate}`])
+        resolve(tableClass)
+      }
+    }).catch(err => {
+      reject("Error finding version: "+err)
+    })
+  });
+}
 
 const program = new Command()
 
@@ -20,34 +54,35 @@ program
   .option('-c, --config [create | list | add | remove]', 'open the interactive config wizard. You can skip this by appending -p & -f options if you wish. Append list to list the current config. Append create to create the config file, if you did not create it at install.')
 
 const questions = [{
-  type: 'input',
-  name: 'configName',
-  message: 'Type in the name you would like to put this favourite as.'
-},
-{
-  type: 'input',
-  name: 'configPlace',
-  message: 'Type in the placeid for this favourite.',
-  validate: function (value) {
-    const pass = value.match(
-      /^\d+$/
-    )
-    if (pass) {
-      return true
-    }
+    type: 'input',
+    name: 'configName',
+    message: 'Type in the name you would like to put this favourite as.'
+  },
+  {
+    type: 'input',
+    name: 'configPlace',
+    message: 'Type in the placeid for this favourite.',
+    validate: function (value) {
+      const pass = value.match(
+        /^\d+$/
+      )
+      if (pass) {
+        return true
+      }
 
-    return 'Please enter a valid place id!'
+      return 'Please enter a valid place id!'
+    }
+  },
+  {
+    type: 'checkbox',
+    name: 'configName',
+    message: 'Select the favourite you would like to remove.'
   }
-},
-{
-  type: 'checkbox',
-  name: 'configName',
-  message: 'Select the favourite you would like to remove.'
-}
 ]
 
 program.parse()
 
+let runUpdate = true
 const options = program.opts()
 if (options.config) {
   if (fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
@@ -175,7 +210,13 @@ if (options.config) {
     console.log(chalk.redBright(`You need to have a config file created! Use ${chalk.white(chalk.italic('edit-roblox-place -c create'))} to create one.`))
   }
 } else {
+  runUpdate = false
   program
     .addHelpText('beforeAll', chalk.redBright('You need to use an option!'))
     .help()
+}
+if (runUpdate) {
+  checkVersion().then(version => {
+    console.log(version.toString())
+  })
 }
