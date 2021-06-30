@@ -33,7 +33,7 @@ function checkVersion() {
         let updateType = semverDiff(packageInfo.version, moduleVersion)
         updateType = updateType.charAt(0).toUpperCase() + updateType.slice(1)
         const msg = {
-          updateAvailable: `${updateType} update available ${chalk.dim(packageInfo.version)} → ${chalk.green(moduleVersion)}`,
+          updateAvailable: `${updateType} update available ${chalk.grey.dim(packageInfo.version)} → ${chalk.green(moduleVersion)}`,
           runUpdate: `Run ${chalk.cyan(`npm i ${packageInfo.name} -g`)} to update`,
         };
         tableClass.push([`${msg.updateAvailable}\n${msg.runUpdate}`])
