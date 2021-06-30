@@ -1,20 +1,18 @@
 #! /usr/bin/env node
 
-const packageInfo = require('../package.json')
-const {
-  Command
-} = require('commander')
-const opener = require('opener')
-const inquirer = require('inquirer')
-const chalk = require('chalk')
-const fs = require('fs')
-const resolve = require('resolve-dir')
-const Table = require('cli-table')
-const semver = require('semver')
-const semverDiff = require('semver-diff')
-const latestVersion = require('latest-version');
+import packageInfo from '../package.json'
+import { Command } from 'commander'
+import opener from 'opener'
+import inquirer from 'inquirer'
+import chalk from 'chalk'
+import fs from 'fs'
+import expandTilde from 'expand-tilde'
+import Table from 'cli-table'
+import semver from 'semver'
+import semverDiff from 'semver-diff'
+import latestVersion from 'latest-version'
 
-function checkVersion() {
+function checkVersion(): Promise<Table> {
   return new Promise((resolve, reject) => {
     latestVersion(packageInfo.name).then(moduleVersion => {
       if (semver.lt(packageInfo.version, moduleVersion)) {
@@ -30,14 +28,16 @@ function checkVersion() {
             'bottom-left': '╰'
           }
         })
-        let updateType = semverDiff(packageInfo.version, moduleVersion)
-        updateType = updateType.charAt(0).toUpperCase() + updateType.slice(1)
-        const msg = {
-          updateAvailable: `${updateType} update available ${chalk.grey.dim(packageInfo.version)} → ${chalk.green(moduleVersion)}`,
-          runUpdate: `Run ${chalk.cyan(`npm i ${packageInfo.name} -g`)} to update`,
-        };
-        tableClass.push([`${msg.updateAvailable}\n${msg.runUpdate}`])
-        resolve(tableClass)
+        let updateType = semverDiff(packageInfo.version, moduleVersion)?.toString()
+        if (updateType) {
+          updateType = updateType.charAt(0).toUpperCase() + updateType.slice(1)
+          const msg = {
+            updateAvailable: `${updateType} update available ${chalk.grey.dim(packageInfo.version)} → ${chalk.green(moduleVersion)}`,
+            runUpdate: `Run ${chalk.cyan(`npm i ${packageInfo.name} -g`)} to update`,
+          };
+          tableClass.push([`${msg.updateAvailable}\n${msg.runUpdate}`])
+          resolve(tableClass)
+        }
       }
     }).catch(err => {
       reject("Error finding version: "+err)
@@ -62,7 +62,7 @@ const questions = [{
     type: 'input',
     name: 'configPlace',
     message: 'Type in the placeid for this favourite.',
-    validate: function (value) {
+    validate: function (value: string) {
       const pass = value.match(
         /^\d+$/
       )
@@ -85,7 +85,7 @@ program.parse()
 let runUpdate = true
 const options = program.opts()
 if (options.config) {
-  if (fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
+  if (fs.existsSync((expandTilde('~/.edit-roblox-place/config.json')))) {
     if (options.config === 'list') {
       const tableClass = new Table({
         head: [chalk.cyan.bold('Favourite'), chalk.cyan.bold('Place ID')],
@@ -96,35 +96,34 @@ if (options.config) {
           'bottom-left': '╰'
         }
       })
-      const tableJSON = JSON.parse(fs.readFileSync((resolve('~/.edit-roblox-place/config.json'))))
+      const tableJSON = JSON.parse(fs.readFileSync((expandTilde('~/.edit-roblox-place/config.json')), { encoding: 'utf-8' }))
       const keys = Object.keys(tableJSON.favourites)
       let i
       for (i = 0; i < keys.length; i++) {
-        const object = {}
+        const object: { [index: string]: string } = {}
         object[keys[i]] = tableJSON.favourites[keys[i]]
         tableClass.push(object)
       }
       console.log(tableClass.toString())
     } else if (options.config === 'create') {
-      if (!fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
+      if (!fs.existsSync((expandTilde('~/.edit-roblox-place/config.json')))) {
         console.log(chalk.bold('Creating the config file.'))
-        fs.mkdirSync((resolve('~/.edit-roblox-place')), {
+        fs.mkdirSync((expandTilde('~/.edit-roblox-place')), {
           recursive: true
         })
-        fs.writeFileSync((resolve('~/.edit-roblox-place/config.json')), JSON.stringify({
+        fs.writeFileSync((expandTilde('~/.edit-roblox-place/config.json')), JSON.stringify({
           favourites: {}
         }))
       }
     } else if (options.config === 'remove') {
-      const file = JSON.parse(fs.readFileSync((resolve('~/.edit-roblox-place/config.json'))))
-      const question = questions[2]
-      question.choices = Object.keys(file.favourites)
+      const file = JSON.parse(fs.readFileSync((expandTilde('~/.edit-roblox-place/config.json')), { encoding: 'utf-8' }))
+      const question = Object.assign({ choices: Object.keys(file.favourites) }, questions[2]) // TS didn't like adding using .choices!
       inquirer.prompt([question]).then((answers) => {
         let i
         for (i = 0; i < answers.configName.length; i++) {
           delete file.favourites[answers.configName[i]] // Is there any better way to do this? This feels wrong!
         }
-        fs.writeFileSync((resolve('~/.edit-roblox-place/config.json')), JSON.stringify(file))
+        fs.writeFileSync((expandTilde('~/.edit-roblox-place/config.json')), JSON.stringify(file))
         console.log('Edited the config file.')
       })
     } else {
@@ -133,33 +132,33 @@ if (options.config) {
           configName: options.favourite.toLowerCase(),
           configPlace: options.place
         }
-        const file = JSON.parse(fs.readFileSync((resolve('~/.edit-roblox-place/config.json'))))
+        const file = JSON.parse(fs.readFileSync((expandTilde('~/.edit-roblox-place/config.json')), { encoding: 'utf-8' }))
         file.favourites[answers.configName] = answers.configPlace
-        fs.writeFileSync((resolve('~/.edit-roblox-place/config.json')), JSON.stringify(file))
+        fs.writeFileSync((expandTilde('~/.edit-roblox-place/config.json')), JSON.stringify(file))
         console.log('Edited the config file.')
       } else if (options.place) {
         inquirer.prompt([questions[0]]).then((answers) => {
           answers.configPlace = options.place
           answers.configName = answers.configName.toLowerCase()
-          const file = JSON.parse(fs.readFileSync((resolve('~/.edit-roblox-place/config.json'))))
+          const file = JSON.parse(fs.readFileSync((expandTilde('~/.edit-roblox-place/config.json')), { encoding: 'utf-8' }))
           file.favourites[answers.configName] = answers.configPlace
-          fs.writeFileSync((resolve('~/.edit-roblox-place/config.json')), JSON.stringify(file))
+          fs.writeFileSync((expandTilde('~/.edit-roblox-place/config.json')), JSON.stringify(file))
           console.log('Edited the config file.')
         })
       } else if (options.favourite) {
         inquirer.prompt([questions[1]]).then((answers) => {
           answers.configName = options.favourite.toLowerCase()
-          const file = JSON.parse(fs.readFileSync((resolve('~/.edit-roblox-place/config.json'))))
+          const file = JSON.parse(fs.readFileSync((expandTilde('~/.edit-roblox-place/config.json')), { encoding: 'utf-8' }))
           file.favourites[answers.configName] = answers.configPlace
-          fs.writeFileSync((resolve('~/.edit-roblox-place/config.json')), JSON.stringify(file))
+          fs.writeFileSync((expandTilde('~/.edit-roblox-place/config.json')), JSON.stringify(file))
           console.log('Edited the config file.')
         })
       } else {
         inquirer.prompt([questions[0], questions[1]]).then((answers) => {
           answers.configName = answers.configName.toLowerCase()
-          const file = JSON.parse(fs.readFileSync((resolve('~/.edit-roblox-place/config.json'))))
+          const file = JSON.parse(fs.readFileSync((expandTilde('~/.edit-roblox-place/config.json')), { encoding: 'utf-8' }))
           file.favourites[answers.configName] = answers.configPlace
-          fs.writeFileSync((resolve('~/.edit-roblox-place/config.json')), JSON.stringify(file))
+          fs.writeFileSync((expandTilde('~/.edit-roblox-place/config.json')), JSON.stringify(file))
           console.log('Edited the config file.')
         })
       }
@@ -184,9 +183,9 @@ if (options.config) {
   console.log(tableClass.toString())
   opener(`roblox-studio:1+task:EditPlace+placeId:${options.place}`)
 } else if (options.favourite) {
-  if (fs.existsSync((resolve('~/.edit-roblox-place/config.json')))) {
+  if (fs.existsSync((expandTilde('~/.edit-roblox-place/config.json')))) {
     options.favourite = options.favourite[0] ? options.favourite.join(' ') : options.favourite
-    const configFile = JSON.parse(fs.readFileSync((resolve('~/.edit-roblox-place/config.json'))))
+    const configFile = JSON.parse(fs.readFileSync((expandTilde('~/.edit-roblox-place/config.json')), { encoding: 'utf-8' }))
     if (configFile.favourites[options.favourite.toLowerCase()]) {
       const tableClass = new Table({
         style: {
