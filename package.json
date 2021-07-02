@@ -1,6 +1,6 @@
 {
   "name": "edit-roblox-place",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "main": "out/index.js",
   "bin": {
     "edit-roblox-place": "out/index.js"
@@ -12,7 +12,8 @@
     "test": "echo No tests && exit 1",
     "package": "pkg -o edit-roblox-place -t node14-win-x64,node14-win-x86,node14-macos-x64,node14-linux-x64 src/index.js",
     "postinstall": "node out/install.js",
-    "uninstall": "node out/uninstall.js"
+    "uninstall": "node out/uninstall.js",
+    "prepublishOnly": "tsc"
   },
   "dependencies": {
     "cli-table": "0.3.6",
