@@ -84,3 +84,6 @@ edit-roblox-place-linux-x64
 edit-roblox-place-macos-x64
 edit-roblox-place-win-x64.exe
 edit-roblox-place-win-x86.exe
+
+# Compiled Code
+out/
