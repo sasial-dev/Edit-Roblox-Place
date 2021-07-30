@@ -20,7 +20,7 @@
     "commander": "8.1.0",
     "expand-tilde": "2.0.2",
     "inquirer": "8.1.2",
-    "latest-version": "5.1.0",
+    "latest-version": "6.0.0",
     "opener": "1.5.2",
     "semver-diff": "4.0.0"
   },
