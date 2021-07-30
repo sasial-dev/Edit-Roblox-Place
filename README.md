@@ -15,7 +15,7 @@ A powerful, interactive CLI (Command Line Interface) to help you open Roblox Stu
 
 ### Prerequisites
 
-You must have [node](https://nodejs.org/) installed if you are installing through npm. It must be **at least** version 10.
+You must have [node](https://nodejs.org/) installed if you are installing through npm. It must be **at least** version 12.20, 14.14, or 16.0. (This package has dependencies that are [Pure ESM](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c))
 
 ### Reccomended Installation
 
