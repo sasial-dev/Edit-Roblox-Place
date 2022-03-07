@@ -16,7 +16,7 @@
     "prepublishOnly": "tsc"
   },
   "dependencies": {
-    "cli-table": "0.3.6",
+    "cli-table": "0.3.11",
     "commander": "8.1.0",
     "expand-tilde": "2.0.2",
     "inquirer": "8.1.2",
